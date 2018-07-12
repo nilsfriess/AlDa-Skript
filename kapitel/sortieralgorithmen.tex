@@ -1,5 +1,13 @@
 \section{Sortieralgorithmen}
-Bevor verschiedene Sortieralgorithmen diskutiert werden, soll zunächst eine Möglichkeit eingeführt werden, die Korrektheit eines (Sortier-)Algorithmus zu beweisen:
+Bevor verschiedene Sortieralgorithmen diskutiert werden, wollen wir zunächst einige Begriffe einführen, die Sortieralgorithmen charakterisieren und eine Möglichkeit eingeführen, die benutzt wird , um die Korrektheit eines (Sortier-)Algorithmus zu beweisen:
+
+\begin{defi}
+  Ein Sortierverfahren heißt \emph{stabil}, falls es die relative relative Reihenfolge gleicher Elemente durch das Sortieren nicht verändert.
+\end{defi}
+
+\begin{defi}
+  Ein (Sortier-)Algorithmus arbeitet \emph{in-place} (manchmal auch: \emph{in-situ}), wenn er außer dem von der Eingabe benötigten Speicherplatz nur eine konstante, von der Eingabelänge unabhängige Menge von Speicher benötigt. Arbeitet ein Algorithmus nicht in-place, dann arbeitet er \emph{out-of-place}.
+\end{defi}
 
 \subsection{Schleifeninvarianten}
 Eine Invariante ist eine Aussage, die über die Ausführung bestimmter Programmbefehle hinweg gilt. Für eine \textbf{Schleifeninvariante} gilt hierbei, dass sie
@@ -252,3 +260,7 @@ Der Algorithmus zählt, wie oft jeder der Eingabewerte vorkommt und speichert di
 Radixsort ein weiterer nicht-vergleichsbasierter Sortieralgorithmus. Er basiert auf Countingsort, bzw. verwendet Countingsort in den einzelnen Schritten. Wie Countingsort ist auch Radixsort nur für das Sortieren Zahlen geeignet (oder geeignete Kodierungen).
 
 Zunächst werden die Elemente aufsteigend nach ihrer letzten Stelle\footnote{Also der niederwertigsten Stelle, bspw. für $234$ die Stelle $4$} sortiert (mittels Countingsort). Im Anschluss wird aufsteigend nach der zweitletzten Stelle sortiert (wieder mit Countingsort). Dieses Vorgehen wird für alle Stellen wiederholt. Da Countingsort stabil ist, werden bereits sortierte Zahlen nicht wieder vertauscht, falls sie in einer Stelle übereinstimmen.
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:

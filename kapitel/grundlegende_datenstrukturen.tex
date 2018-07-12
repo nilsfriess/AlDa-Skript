@@ -1,62 +1,178 @@
 \section{Grundlegende Datenstrukturen und deren Algorithmen}
-Algorithmen manipulieren dynamische Mengen von Elementen (Einabe $\rightarrow$ Ausgabe). Diese Mengen werden in Computern/ Programmiersprachen intern durch verschiedene Datenstrukturen realisiert. Diese Datenstrukturen unterscheiden sich insbesondere durch Effizienz in Bezug auf Manipulationen (Einfügen, Löschen etc.). Die Wahl der richtigen Datenstruktur hängt also davon ab, welche Operationen der zugrundeliegende Algorithmus verwendet und wie effizient die Datenstruktur diese Operationen umsetzt. Im Folgenden sollen einige grundlegenden Datenstrukturen eingeführt und deren Vor- und Nachteile diskutiert werden.
+Algorithmen manipulieren dynamische Mengen von Elementen (Einabe
+$\rightarrow$ Ausgabe). Diese Mengen werden durch verschiedene
+abstrakte Datenstrukturen realisiert. Diese Datenstrukturen
+unterscheiden sich insbesondere durch Effizienz in Bezug auf
+Manipulationen (Einfügen, Löschen etc.). Die Wahl der richtigen
+Datenstruktur hängt also davon ab, welche Operationen der
+zugrundeliegende Algorithmus verwendet und wie effizient die
+Datenstruktur diese Operationen umsetzt. Im Folgenden sollen einige
+grundlegenden Datenstrukturen eingeführt und deren Vor- und Nachteile
+diskutiert werden.
 
-Dazu werden zunächst Graphen und Bäume eingeführt, welche die Grundlage für viele der nachfolgend eingeführten Datenstrukturen bilden.
+Die Dantestrukturen sollten also insbesondere nicht für genau einen
+Algorithmus entworfen werden, sondern wiederverwendbar gestaltet sein
+und von unnötigen Details abstrahieren. Darüberhinaus sollten sie
+unabhängig ihrer späteren Implementierung in einer konkreten
+Programmiersprache spezifiziert werden.
 
-%%\input{./kapitel/graphen}
+Wir wollen nun zunächst Graphen und Bäume eingeführen, welche die
+Grundlage für viele der nachfolgend eingeführten Datenstrukturen
+bilden.
+
+\input{./kapitel/graphen}
 
 \subsection{Bäume}
-Ein Baum ist ein spezieller Typ von Graph, der zusammenhängend ist und keine geschlossenen Pfade (Kreise) enthält. Die Knoten mit Grad 1 heißen Blätter (sie haben insbesondere Ausgangsgrad 0). Beispiele für Bäume haben wir bereits in Abbildung \ref{bfstree} und \ref{dfstree} gesehen. In der Regel betrachten wir nur gerichtete Bäume, die einen ausgezeichneten Startknoten besitzen, die sog. Wurzel. Die Wurzel zeichnet sich dadurch aus, dass sie der einzige Knoten mit Eingangsgrad 0 ist. 
+Ein Baum ist ein spezieller Typ von Graph, der zusammenhängend ist und
+keine geschlossenen Pfade (Kreise) enthält. Die Knoten mit Grad 1
+heißen Blätter (sie haben insbesondere Ausgangsgrad 0). Beispiele für
+Bäume haben wir bereits in Abbildung \ref{bfstree} und \ref{dfstree}
+gesehen. In der Regel betrachten wir nur gerichtete Bäume, die einen
+ausgezeichneten Startknoten besitzen, die sog. Wurzel. Die Wurzel
+zeichnet sich dadurch aus, dass sie der einzige Knoten mit
+Eingangsgrad 0 ist.
 
-Man erkennt leicht, dass es zwischen zwei Knoten eines Baums nur genau einen Pfad geben kann. Außerdem gilt für die Anzahl der Kanten eines Baums $G = (E,V)$:
+Man erkennt leicht, dass es zwischen zwei Knoten eines Baums nur genau
+einen Pfad geben kann. Außerdem gilt für die Anzahl der Kanten eines
+Baums $G = (E,V)$:
 \begin{gather*}
-	|E| = |V| - 1,
+  |E| = |V| - 1,
 \end{gather*}
 da es zu jedem Knoten eine Kante gibt, außer zur Wurzel.\\
 
-Im Folgenden betrachten wir hauptsächlich \emph{Binärnäume}, welche sich dadurch auszeichnen, dass jeder Knoten eines Binärbaums nur höchstens zwei direkte Nachkommen (\emph{Kinder}) haben kann.
-Als \emph{Tiefe} eines Knotens bezeichnen wir die Anzahl der Kanten bis zur Wurzel. Dabei ist die Höhe des Baumes die maximal auftretende Tiefe.\footnote{Oft definiert man jedoch die Höhe des leerens Baums als $0$, muss also zur Anzahl der Kanten noch $1$ addieren.} Haben alle Blätter die gleiche Tiefe, so heißt der Baum vollständig.
+Im Folgenden betrachten wir hauptsächlich \emph{Binärnäume}, welche
+sich dadurch auszeichnen, dass jeder Knoten eines Binärbaums nur
+höchstens zwei direkte Nachkommen (\emph{Kinder}) haben kann.  Als
+\emph{Tiefe} eines Knotens bezeichnen wir die Anzahl der Kanten bis
+zur Wurzel. Dabei ist die Höhe des Baumes die maximal auftretende
+Tiefe.\footnote{Oft definiert man jedoch die Höhe des leerens Baums
+  als $0$, muss also zur Anzahl der Kanten noch $1$ addieren.} Haben
+alle Blätter die gleiche Tiefe, so heißt der Baum vollständig.
 
-\subsubsection{Binärer Suchbaum}
-Ein \emph{binärer Suchbaum} ist ein binärer Baum, bei dem den Knoten Schlüssel zugewiesen werden und die Schlüssel des linken Teilbaums eines Knotens nur kleiner (oder gleich) und die des rechten nur größer (oder gleich) als der Schlüssel des Knotens selbst sind. Sie lösen (wie auch andere Suchbäume) das sog. \emph{Wörterbuchproblem}. Angenommen ist eine große Anzahl von Schlüsseln, denen jeweils ein Wert beigegeben ist. In einem Wörterbuch deutsch–englisch ist das deutsche Wort der Schlüssel und englische Wörter sind der gesuchte Wert. Ähnlich verhält es sich bei einem Telefonbuch mit Namen und Adresse als Schlüssel und der Telefonnummer als dem gesuchten Wert.
-
-In beiden Beispielen sind die Schlüssel üblicherweise sortiert, was es ermöglicht das Suchen nach Schlüsseln deutlich zu beschleunigen: Man schlägt das Buch zunächst in der Mitta auf und überprüft, ob der Schlüssel gefunden wurde. Falls er nicht gefunden wurde, der gesuchte Schlüssel aber kleiner ist, als der betrachtete, kann man nun die hintere Hälfte des Buches schon ausschließen. So kann man nun rekursiv mit der entsprechenden anderen Hälfte fortfahren und gelangt so bei $n$ Schlüsseln mit maximal $\lceil \log_2(n+1) \rceil $ Vergleichen zum Ziel.\footnote{Dieses Verfahren nennt man \emph{Binäre Suche}}
-
-Einen Binärbaum würde man so aufbauen, dass zuerst ein Element als Wurzel eingefügt wird. Wird ein neues Element eingefügt, dessen Schlüssel kleiner ist als der der Wurzel, wird es in den linken Teilbaum eingefügt (rekursiv mit dem linken Kind als neue Wurzel, solange bis man es als Blatt einfügen kann). Analog verfährt man für Elemente mit größerem Schlüssel.
-
-Hierbei kann es natürlich vorkommen, dass der Baum nicht balanciert ist oder im Extremfall sogar zur lineare Liste wird (wenn man immer nur größere bzw. immer nur kleinere Elemente einfügt). Aus dieser Problematik heraus sind einige Varianten des Binären Suchbaums entstanden, die die Baumstruktur beim Einfügen oder Löschen so verändern, dass der Baum balanciert wird oder die Struktur zumindest praktischer wird.
-
-
-
-
-
-\subsection{Hashing und Hashtabellen}
-Hashtabellen sind eine weitere Datenstruktur, die wie jede andere Datenstruktur (Arrays, Heaps, Bäume) auch Stärken und Schwächen hat. Hashtabellen eignen sich besonders, so lange wir nur eine Menge von Daten benötigen, in die wir schnell einfügen, löschen und in der wir suchen können, sind Hashtabellen meist sehr effizient.\footnote{Dabei hängt die Effizienz der Hashtabelle maßgeblich von der Qualität der verwendeten Hashfunktion ab, die für die Art der verwendeten Daten geeignet sein muss.}
-
-Die zugrundeliegende Idee ist es, aus den zu speichernden Elementen selbst deren Position in einer Tabelle zu schließen. Dann müsste man beim Suchen einen Elements nur dessen Position berechnen und könnte direkt an die richige Stelle in der Tabelle springen.
-
+\subsubsection{Suche in Bäumen}
+Wir unterscheiden zunächst die folgenden drei Varianten, um einen Baum
+zu durchlaufen:
 \begin{defi}
-	Eine \emph{Hashtabelle} ist eine Datenstruktur, welche mit Hilfe einer Funktion $h : U \rightarrow D$ -- die sog. \emph{Hashfunktion} -- die Position berechnet, an der der Schlüssel $u \in U$ im Elementebereich (also in der Hashtabelle) $D \subset \mathbb{N}$ gespeichert werden soll. Der Elementbereich $D$ ist dabei eine natürliche Zahl in $\{0, 1, \dots, m-1\}$, wobei $m$ die Länge der Hashtabelle ist.
+  Es sei $T$ ein geordneter Baum mit Wurzel $r$ und Teilbäumen
+  $T_1, \dots, T_m$.
+  \begin{enumerate}
+  \item[(a)] Wenn $T$ in \emph{Postorder} durchlaufen wird, dann
+    werden (rekursiv) die Teilbäume $T_1, \dots, T_m$ nacheinander
+    durchlaufen und danach wird die Wurzel $r$ besucht.
+  \item[(b)] Wenn $T$ in \emph{Präorder} durchlaufen wird, dann wird
+    zuerst $r$ besucht und dann werden die Teilbäume $T_1, \dots, T_m$
+    (rekursiv) durchlaufen.
+  \item[(c)] Wenn $T$ in \emph{Inorder} durchlaufen wird, wird zuerst
+    $T_1$ (rekursiv) durchlaufen, sodann wird die Wurzel $r$ besucht
+    und letzlich werden die Teilbäume $T_2, \dots, T_m$ (rekursiv)
+    durchlaufen.
+  \end{enumerate}
 \end{defi}
 
-Die Hashfunktion berechnet also für ein gegebenes Element dessen Position in einer Tabelle. Sucht man nun ein Element, oder will ein neues Element einfügen, kann man mit Hilfe der Hashfunktion die Position des Elements berechnen und kann dann in konstanter Zeit ($\mathcal{O}(1)$) direkt an die entsprechende Stelle in der Tabelle springen.
+\subsubsection{Binärer Suchbaum}
+Ein \emph{binärer Suchbaum} ist ein binärer Baum, bei dem den Knoten
+Schlüssel zugewiesen werden und die Schlüssel des linken Teilbaums
+eines Knotens nur kleiner (oder gleich) und die des rechten nur größer
+(oder gleich) als der Schlüssel des Knotens selbst sind. Sie lösen
+(wie auch andere Suchbäume) das
+sog. \emph{Wörterbuchproblem}. Angenommen ist eine große Anzahl von
+Schlüsseln, denen jeweils ein Wert beigegeben ist. In einem Wörterbuch
+deutsch–englisch ist das deutsche Wort der Schlüssel und englische
+Wörter sind der gesuchte Wert. Ähnlich verhält es sich bei einem
+Telefonbuch mit Namen und Adresse als Schlüssel und der Telefonnummer
+als dem gesuchten Wert.
+
+In beiden Beispielen sind die Schlüssel üblicherweise sortiert, was es
+ermöglicht das Suchen nach Schlüsseln deutlich zu beschleunigen: Man
+schlägt das Buch zunächst in der Mitta auf und überprüft, ob der
+Schlüssel gefunden wurde. Falls er nicht gefunden wurde, der gesuchte
+Schlüssel aber kleiner ist, als der betrachtete, kann man nun die
+hintere Hälfte des Buches schon ausschließen. So kann man nun rekursiv
+mit der entsprechenden anderen Hälfte fortfahren und gelangt so bei
+$n$ Schlüsseln mit maximal $\lceil \log_2(n+1) \rceil $ Vergleichen
+zum Ziel.\footnote{Dieses Verfahren nennt man \emph{Binäre Suche}}
+
+Einen Binärbaum würde man so aufbauen, dass zuerst ein Element als
+Wurzel eingefügt wird. Wird ein neues Element eingefügt, dessen
+Schlüssel kleiner ist als der der Wurzel, wird es in den linken
+Teilbaum eingefügt (rekursiv mit dem linken Kind als neue Wurzel,
+solange bis man es als Blatt einfügen kann). Analog verfährt man für
+Elemente mit größerem Schlüssel.
+
+Hierbei kann es natürlich vorkommen, dass der Baum nicht balanciert
+ist oder im Extremfall sogar zur lineare Liste wird (wenn man immer
+nur größere bzw. immer nur kleinere Elemente einfügt). Aus dieser
+Problematik heraus sind einige Varianten des Binären Suchbaums
+entstanden, die die Baumstruktur beim Einfügen oder Löschen so
+verändern, dass der Baum balanciert wird oder die Struktur zumindest
+praktischer wird.
+
+\subsection{Hashing und Hashtabellen}
+Hashtabellen sind eine weitere Datenstruktur, die wie jede andere
+Datenstruktur (Arrays, Heaps, Bäume) auch Stärken und Schwächen
+hat. Hashtabellen eignen sich besonders, so lange wir nur eine Menge
+von Daten benötigen, in die wir schnell einfügen, löschen und in der
+wir suchen können, sind Hashtabellen meist sehr
+effizient.\footnote{Dabei hängt die Effizienz der Hashtabelle
+  maßgeblich von der Qualität der verwendeten Hashfunktion ab, die für
+  die Art der verwendeten Daten geeignet sein muss.}
+
+Die zugrundeliegende Idee ist es, aus den zu speichernden Elementen
+selbst deren Position in einer Tabelle zu schließen. Dann müsste man
+beim Suchen einen Elements nur dessen Position berechnen und könnte
+direkt an die richige Stelle in der Tabelle springen.
+
+\begin{defi}
+  Eine \emph{Hashtabelle} ist eine Datenstruktur, welche mit Hilfe
+  einer Funktion $h : U \rightarrow D$ -- die sog. \emph{Hashfunktion}
+  -- die Position berechnet, an der der Schlüssel $u \in U$ im
+  Elementebereich (also in der Hashtabelle) $D \subset \mathbb{N}$
+  gespeichert werden soll. Der Elementbereich $D$ ist dabei eine
+  natürliche Zahl in $\{0, 1, \dots, m-1\}$, wobei $m$ die Länge der
+  Hashtabelle ist.
+\end{defi}
+
+Die Hashfunktion berechnet also für ein gegebenes Element dessen
+Position in einer Tabelle. Sucht man nun ein Element, oder will ein
+neues Element einfügen, kann man mit Hilfe der Hashfunktion die
+Position des Elements berechnen und kann dann in konstanter Zeit
+($\mathcal{O}(1)$) direkt an die entsprechende Stelle in der Tabelle
+springen.
 Hashtabellen sind also insbesondere nur geeignet, wenn aus den zu speichernden Elementen einfach eindeutige Schlüssel generiert werden können. \\
 Gute Hashfunktion sollten
 \begin{itemize}
-	\item surjektiv sein, d.h. die ganze Tabelle ausnutzen
-	\item die Schlüssel möglichst gleichmäßig verteilen
+\item surjektiv sein, d.h. die ganze Tabelle ausnutzen
+\item die Schlüssel möglichst gleichmäßig verteilen
 \end{itemize}
 
 \begin{anm}
-  In der Regel gilt $|U| > |D|$, es gibt also mehr Schlüssel als Plätze in der Hashtabelle.\footnote{Die Schlüsselmenge zu verkleinern ist ja gerade einer der Gründe, Hashtabellen zu benutzen.} Da die Hashfunktion i. A. auch nicht injektiv ist, kann es sein, dass verschiedene Elemente (bzw. verschiedene Schlüssel) auf denselben Index (Hashwert) abgebildet werden. Dies bezeichnet man als \textbf{Kollision}. Es müssen also Strategien gefunden werden, die solche Kollisionen erkennen und behandeln.
+  In der Regel gilt $|U| > |D|$, es gibt also mehr Schlüssel als
+  Plätze in der Hashtabelle.\footnote{Die Schlüsselmenge zu
+    verkleinern ist ja gerade einer der Gründe, Hashtabellen zu
+    benutzen.} Da die Hashfunktion i. A. auch nicht injektiv ist, kann
+  es sein, dass verschiedene Elemente (bzw. verschiedene Schlüssel)
+  auf denselben Index (Hashwert) abgebildet werden. Dies bezeichnet
+  man als \textbf{Kollision}. Es müssen also Strategien gefunden
+  werden, die solche Kollisionen erkennen und behandeln.
 \end{anm}
 
 \subsubsection{Hashverfahren mit Verkettung}
-Wir wollen in den Folgenden Abschnitten einige Möglichkeiten diskutieren, Kollisionen zu behandeln. Eine intuitive Möglichkeit ist es, bei einer Kollision einfach mehrere Elemente an der selben Stelle in der Hashtabelle zu speichern, indem man für jeden Eintrag der Hashtabelle eine Liste speichert, der man dann die kollidierenden Elemente hinzufügt.
+Wir wollen in den Folgenden Abschnitten einige Möglichkeiten
+diskutieren, Kollisionen zu behandeln. Eine intuitive Möglichkeit ist
+es, bei einer Kollision einfach mehrere Elemente an der selben Stelle
+in der Hashtabelle zu speichern, indem man für jeden Eintrag der
+Hashtabelle eine Liste speichert, der man dann die kollidierenden
+Elemente hinzufügt.
 
 \subsubsection{Hashtabelle mit Sondierung}
-Sondierung
+\Large ToDo \normalsize
 
 \subsection{Heap}
-Ein \emph{Heap} (deutsch: Haufen) ist eine auf Bäumen basierende Datenstruktur.
-Test
+Ein \emph{Heap} (deutsch: Haufen) ist eine auf Bäumen basierende
+Datenstruktur.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
