@@ -1,0 +1,46 @@
+\documentclass{scrartcl}
+
+  \usepackage[utf8]{inputenc}
+  \usepackage{kpfonts}
+  \usepackage{fancyhdr}
+  \usepackage[T1]{fontenc}
+  \usepackage[ngerman]{babel}
+  \usepackage{amsmath,amsfonts,amsthm}  
+  \usepackage{tabularx}
+  \usepackage{graphicx}
+  \usepackage{enumitem}
+  \usepackage[Algorithmus]{algorithm}
+  \usepackage{algpseudocode}  
+  \usepackage{mathtools}
+  \usepackage{tikz}
+
+  \usetikzlibrary{arrows.meta}
+
+  \usepackage{hyperref}
+  \hypersetup{
+      colorlinks=true,
+      linktoc=all,
+      linkcolor=black
+  }
+
+  \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+  \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+  \newtheorem{defi}{Definition}[section]
+  \newtheorem{satz}[defi]{Satz}
+  \newtheorem{lemma}[defi]{Lemma}
+  \newtheorem{proposition}[defi]{Proposition}
+  \newtheorem{bsp}[defi]{Beispiel}
+  \newtheorem{anm}[defi]{Anmerkung}
+
+  \pagestyle{headings}
+  
+\begin{document}
+\tableofcontents
+\newpage
+
+\input{./kapitel/algorithmen_und_komplexitaet}
+\input{./kapitel/grundlegende_datenstrukturen}
+\input{./kapitel/sortieralgorithmen}
+
+\end{document}

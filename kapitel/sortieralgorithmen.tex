@@ -1,0 +1,254 @@
+\section{Sortieralgorithmen}
+Bevor verschiedene Sortieralgorithmen diskutiert werden, soll zunächst eine Möglichkeit eingeführt werden, die Korrektheit eines (Sortier-)Algorithmus zu beweisen:
+
+\subsection{Schleifeninvarianten}
+Eine Invariante ist eine Aussage, die über die Ausführung bestimmter Programmbefehle hinweg gilt. Für eine \textbf{Schleifeninvariante} gilt hierbei, dass sie
+\begin{enumerate}
+	\item \emph{unittelbar vor Eintritt} in eine Schleife und
+	\item \emph{am Ende} des Schleifenrumpfes wieder
+\end{enumerate}
+gilt. Die Schleifenvariante muss außerdem eine \emph{sinnvolle} Eigenschaft der Schleife wiedergeben. Typischerweise beschreiben Schleifeninvarianten Wertebereiche von Variablen oder Beziehungen der Variablen untereinander.
+
+\begin{bsp}
+	Der folgende Algorithmus multipliziert die beiden Variablen $a$ und $b$ miteinander:
+	\begin{algorithm}[H]
+		\caption{Beispiel für Algorithmus mit Schleifeninvariante $(x \cdot y) + p = a \cdot b$}
+		\begin{algorithmic}[1]
+			\Procedure{multiply}{$a,b$}
+			\State{$x \gets a$}
+			\State{$y \gets b$}
+			\State{$p \gets 0$} \Comment{Die Invariante muss vor der Schleife gelten}
+			\While{$x > 0$}
+			\State{} \Comment{Die Invariante muss am Anfang jedes Durchlaufs gelten}
+			\State{$p \gets p + y$}
+			\State{$x \gets x - 1$}
+			\State{} \Comment{Die Invariante muss am Ende jedes Durchlaufs gelten}
+			\EndWhile
+			\State{} \Comment{Die Invariante muss auch direkt nach der Schleife gelten}
+			\State \Return{$p$}
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+	\emph{Anmerkung:} Zwischen Zeile 7 und 8 muss die Schleifeninvariante nicht gelten.
+\end{bsp}
+
+\subsection{Vergleichsbasierte Sortieralgorithmen}
+
+\subsubsection{Insertionsort}
+Dieser Abschnitt behandelt das Sortierverfahren Insertionsort (Sortieren durch Einfügen). Die Idee des Algorithmus ist, die typische \emph{menschliche} Vorgehensweise -- bspw. beim Sortieren eines Stapels von Karten -- umzusetzen. D. h. es wird mit der ersten Karte ein neuer Stapel gestartet. Anschließend nimmt man jeweils die nächste Karte des Originalstapels und fügt diese an der richtigen Stelle im neuen Stapel ein.
+
+\begin{anm}
+	Insertionsort arbeitet in-place und ist stabil.
+\end{anm}
+
+\begin{algorithm}
+	\caption{Insertionsort}
+	\begin{algorithmic}[0]
+		\For{$i \gets 1$ \textbf{to} $len(A)$}
+		\State $key \gets A[i]$
+		\State $j \gets i$
+		\While{$j > 0$ \& $A[j-1] > key$}
+		\State $A[j] \gets A[j-1]$
+		\State $j \gets j - 1$
+		\EndWhile
+		\State $A[j] \gets key$
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{proposition}[Laufzeit]
+	Insertionsort liegt im besten Fall in $\Theta(n)$ und im durchschnittlichen und schlechtesten Fall $\mathcal{O}(n^2)$.
+\end{proposition}
+
+\begin{proof}
+	Im \textbf{besten Fall} ist die Liste schon sortiert. Die Anzahl der Vergleiche ist gleich der Anzahl der Schleifendurchläufe: $n-1$. Bei jedem Rückweg zur Einfügeposition nimmt man den Faktor $1$. Somit beträgt die Gesamtzahl der Vergleiche: $(n-1) \cdot 1 = n - 1$. Für große Listen lässt ich abschätzen: $n - 1 \approx n$, also haben wir linearen Aufwand.
+
+	Im \textbf{mittleren Fall} ist die Liste unsortiert. Die Einfügeposition befindet sich wahrscheinlich auf der Hälfte des Rückwegs. Bei jedem der $n-1$ Rückwege muss ein $\frac{i-1}{2}$ Vergleich addiert werden. Die Gesamtzahl der Vergleiche beträgt dann:
+	\begin{align*}
+		 & \frac{n-1}{2} + \frac{n-2}{2} + \dots + \frac{2}{2} + \frac{1}{2} \\
+		 & = \frac{(n-1) + (n-2) + \dots + 2 + 1}{2}                         \\
+		 & = \frac{1}{2} \cdot \frac{n \cdot (n-1)}{2}                       \\
+		 & = \frac{n \cdot (n - 1)}{2}                                       \\
+		 & \approx \frac{n^2}{4}
+	\end{align*}
+	Daraus ergibt sich ein quadratischer Aufwand.
+
+	Im \textbf{schlechtesten Fall} ist die Liste absteigend sortiert. Bei jedem der $n-1$ Rückwege müssen $i-1$ Elemente verglichen werden. Analog zu vorhergehenden Überlegungen, gibt es hier aber doppelte Rückwegelänge. Daraus ergibt sich die Gesamtzahl der Vergleiche
+	\begin{align*}
+		(n-1) + (n-2) + \dots + 2 + 1 = \frac{n \cdot (n-1)}{2} \approx \frac{n^2}{2}.
+	\end{align*}
+	Daraus ergibt sich wiederum quadratischer Aufwand.
+\end{proof}
+
+\subsubsection{Bubblesort}
+Bubblesort ist ein weitere vergleichsbasierter Sortieralgorithmus. Hierbei wird die zu sortierende Liste durchlaufen bis zwei Werte falsch sortiert sind. Dies wird korrigiert und das Ganze wird wiederholt bis das Feld vollständig sortiert ist.
+
+Hierbei wird das Feld von hinten nach vorne sortiert (zuerst steht das größte Element ganze hinten, dann das zweitgrößte an der vorletzten Stelle etc.).
+
+\begin{algorithm}
+	\caption{Bubblesort}
+	\begin{algorithmic}[0]
+		\For{$i \gets len(A) - 1$ \textbf{to} $0 $}
+		\For{$j \gets 0$ \textbf{to} $i$}
+		\If{$A[j] > A[j+1]$}
+		\State $swap(A[j], A[j+1])$
+		\EndIf
+		\EndFor
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{proposition}[Laufzeit]
+	Im schlechtesten und im durchschnittlichen Fall gilt für die Laufzeit (mit $n = len(A)$):
+	\begin{gather*}
+		T(n) \in \sum\limits_{i=1}^n \mathcal{O}(i) = \mathcal{O}\Big( \sum\limits_{i=1}^n{i} \Big) = \mathcal{O}\Big( \frac{n(n+1)}{2} \Big) = \mathcal{O}(n^2).
+	\end{gather*}
+	Im besten Fall ist die Liste bereits sortiert und es muss nichts getauscht werden. Dann ist Bubblesort in $\mathcal{O}(n)$.
+\end{proposition}
+
+\subsubsection{Quicksort}
+Quicksort ist ein schneller, rekursiver Sortieralgorithmus, der nach dem Prinzip \emph{divide and conquer} arbeitet. Hierbei wird zunächst die sortierende Liste in zwei Teillisten getrennt. Dazu wird ein sog. Pivotelement aus der Liste ausgewählt. Alle Elemente, die kleiner als das Pivotelement sind, kommen in die linke Teilliste und alle Elemente, die größer sind, in die rechte Teilliste. Insbesondere sind also nach der Aufteilung die Elemente der linken Liste kleiner oder gleich den Elementen der rechten Liste.
+
+Anschließend muss noch jede Teilliste in sich sortiert werden, um die Sortierung zu beenden. Dazu wird der Quicksort-Algorithmus rekursiv auf der linken und rechten Teilliste ausgeführt. Die Rekursion bricht ab, falls die Länge der Teilliste kleiner oder gleich 1 ist.
+
+\begin{algorithm}
+	\caption{Quicksort mit Hilfsfunktion \textsc{partition}}
+	\begin{algorithmic}
+		\Procedure{quicksort}{$A, low, high$}
+		\If{$low < high$}
+		\State{$piv \gets$ \Call{partition}{$A, low, high$}} \Comment{piv ist der Index des Pivotelements,}
+		\State \Comment{d. h. $A[piv]$ steht jetzt an der richtigen Stelle}
+		\State \Call{quicksort}{$A, low, piv - 1$} \Comment{Linke Teilliste sortieren}
+		\State \Call{quicksort}{$A, piv + 1, high$} \Comment{Rechte Teilliste sortieren}
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Die Hilfsfunktion \textsc{partition} kann folgendermaßen implementiert werden: Man nimmt das letzte Element der Liste als Pivotelement und verschiebt es innerhalb der Liste an die richtige Stelle. Alle Elemente, die kleiner als das Pivotelement sind, werden links davon platziert, alle Elemente die größer sind, rechts davon.
+
+\begin{algorithm}
+	\caption{Hilfsfunktion \textsc{partition}}
+	\begin{algorithmic}
+		\Procedure{partition}{$A, low, high$}
+		\State{$pivot \gets A[high]$}
+		\State{$i \gets low - 1$}
+		\For{$j \gets low$ \textbf{to} $high$}
+		\If{$A[j] \le pivot$} \Comment{Falls aktuelles Element $\le$ Pivot}
+		\State{$i \gets i + 1$} \Comment{Index des kleineren Elements erhöhen}
+		\State \Call{swap}{$A[i], A[j]$}
+		\EndIf
+		\EndFor
+		\State{\Call{swap}{$A[i+1], A[high]$}}
+		\State{\Return{$i + 1$}}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{proposition}[Laufzeit]
+	Im schlechtesten Fall liegt QuickSort in $\mathcal{O}(n^2)$. Im besten Fall und im durchschnittlichen Fall gilt für die asymptotische Laufzeit $\mathcal{O}(n \log n)$.
+\end{proposition}
+\begin{proof}
+	Im Worst Case das Pivotelement stets so gewählt, dass es das größte oder kleinste Element der Liste ist. Die zu untersuchende Liste wird dann in jedem Rekursionsschritt nur um eins kleiner.
+
+	Wird das Pivot-Element ideal gewählt, so wird die Liste in jedem Schritt in zwei Teillisten halbiert. Diese Listen werden wiederum halbiert etc. Es ergeben sich also im 2. Schritt zwei Listen der Länge $\frac{n}{2}$, im 3. Schritt vier Listen der Länge $\frac{n}{4}$ und damit im $\log{n}$-ten Schritt 1-elementige Listen. Für das Vertauschen der Schlüsselelemente sind in jedem Schritt $n$ Vergleiche notwendig, so dass sich insgesamt
+	\begin{gather*}
+		T(n) = n \cdot \log n
+	\end{gather*}
+	Vergleiche ergeben.
+\end{proof}
+
+\subsubsection{Mergesort}
+Wie Quicksort funktioniert auch Mergesort nach dem Prinzip \emph{Divide and Conquer}.
+
+\begin{anm}
+	Mergesort ist stabil, aber in der Regel nicht in-place.
+\end{anm}
+
+\begin{algorithm}
+	\caption{Mergesort unter Verwendung der Hilfsfunktion \textsc{merge}}
+	\begin{algorithmic}
+		\Procedure{mergesort}{$A$}
+		\If{$|A| \le 1$}
+		\State{\Return $A$}
+		\EndIf
+		\State{$middle \gets \big\lfloor \frac{|A|}{2} \big\rfloor $}
+		\State
+		\For{$x$ \textbf{in} $A$ \textbf{up to} $middle$}\Comment{Links der Mitte (inkl. Mitte) in linke Teilliste}
+		\State{$left.$\Call{append}{$x$}}
+		\EndFor
+		\For{$x$ \textbf{in} $A$ \textbf{after} $middle$}\Comment{Rechts der Mitte (ohne Mitte) in rechte Teilliste}
+		\State{$right.$\Call{append}{$x$}}
+		\EndFor
+		\State
+		\State{$left \gets$ \Call{mergesort}{$left$}}
+		\State{$right \gets$ \Call{mergesort}{$right$}}
+		\State
+		\State{\Return{\Call{merge}{$left, right$}}}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Die Funktion \textsc{merge} kann hierbei auf verschiedene Arten implementiert werden, eine einfache Varaiante könnte hierbei folgendermaßen aussehen:
+\begin{algorithm}[H]
+	\caption{Hilfsfunktion \textsc{merge}}
+	\begin{algorithmic}
+		\Procedure{merge}{$left, right$}
+		\State{$result \gets []$}
+		\While{$|left| > 0 $ \textbf{and} $|right| > 0$}
+		\If{\Call{head}{$left$} $\le$ \Call{head}{$right$}}
+		\State{ $result.$\Call{append}{ \textsc{head}($left$) } }
+		\State{ $left \gets$ \Call{tail}{$left$} }
+		\Else
+		\State{ $result.$\Call{append}{ \textsc{head}($right$) } }
+		\State{ $right \gets$ \Call{tail}{$right$} }
+		\EndIf
+		\If{$|left| > 0$}
+		\State{ $result.$\Call{append}{$left$} }
+		\EndIf
+		\If{$|right| > 0$}
+		\State{ $result.$\Call{append}{$right$} }
+		\EndIf
+		\EndWhile
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{Nicht-Vergleichsbasierte Sortieralgorithmen}
+
+\subsubsection{Countingsort}
+Countingsort ist das erste Beispiel für einen nicht-vergleichsbasierten Sortieralgorithmus. Allerdings ist Countingsort nur einsetzbar, falls die zu sortierenden Daten natürliche Zahlen innerhalb eines bekannten Intervalls sind (bzw. die Daten in ein solches Intervall kodiert werden können).
+
+Countingsort benötigt jedoch ein Hilfsarray, das so groß ist wie die Spannweite des Intervalls (für ein Intervall $[n,m] \subsetneq \mathbb{N}$ benötigt man ein Hilfsarray der Länge $m - n + 1$). Dieser Algorithmus ist also nur für relativ kleine Intervallgrößen geeignet (bspw. das Alter von Einwohnern eines Landes: $[0, 150]$).
+
+Der Algorithmus zählt, wie oft jeder der Eingabewerte vorkommt und speichert die jeweilige Anzahl in einem Hilfsarray. Mit Hilfe dieses Arrays wird für jedes Element der Eingabe die Zielposition in der Ausgabe berechnet.
+
+\begin{algorithm}
+	\caption{Countingsort für ein Intervall $[0,k]$}
+	\begin{algorithmic}
+		\Procedure{countingsort}{$A, k$}
+		\State{$C \gets$ \Call{array}{$0,k$}}\Comment{$C$ sollte mit Nullen gefüllt werden}
+		\State{$B \gets$ \Call{array}{$1, |A|$}}\Comment{Sortierte Liste}
+		\For{$j \gets 1$ \textbf{to} $|A|$}
+		\State{$C[A[j]] \gets C[A[j]] + 1$}\Comment{Schreibe in $C[m]$ wie häufig $m$ in $A$ vorkommt}
+		\EndFor
+		\For{$m \gets 1$ \textbf{to} $k$}
+		\State{$C[m] \gets C[m] + C[m-1]$}\Comment{Adressrechnung}
+		\EndFor
+		\For{$j \gets |A|$ \textbf{to} $1$}
+		\State{$B[C[A[j]]] \gets A[j]$} \Comment{Kopiere auf jeweilige Zieladresse in B}
+		\State{$C[A[j]] \gets C[A[j]] - 1$} \Comment{Dekrementiere Zieladresse (falls gleiche Werte in A)}
+		\EndFor
+		\State{\Return{$B$}}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{proposition}[Laufzeit]
+	Die Laufzeit von Countingsort ist in jedem Fall $\mathcal{O}(n \cdot k)$ für $n$ die Länge der Eingabe und $k$ die Größe des verwendeten Intervalls.
+\end{proposition}
+
+\subsubsection{Radixsort}
+Radixsort ein weiterer nicht-vergleichsbasierter Sortieralgorithmus. Er basiert auf Countingsort, bzw. verwendet Countingsort in den einzelnen Schritten. Wie Countingsort ist auch Radixsort nur für das Sortieren Zahlen geeignet (oder geeignete Kodierungen).
+
+Zunächst werden die Elemente aufsteigend nach ihrer letzten Stelle\footnote{Also der niederwertigsten Stelle, bspw. für $234$ die Stelle $4$} sortiert (mittels Countingsort). Im Anschluss wird aufsteigend nach der zweitletzten Stelle sortiert (wieder mit Countingsort). Dieses Vorgehen wird für alle Stellen wiederholt. Da Countingsort stabil ist, werden bereits sortierte Zahlen nicht wieder vertauscht, falls sie in einer Stelle übereinstimmen.

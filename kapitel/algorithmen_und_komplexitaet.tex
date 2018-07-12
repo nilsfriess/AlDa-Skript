@@ -1,0 +1,231 @@
+\section{Algorithmen und Komplexität}
+Oftmals steht man in der Informatik vor der Aufgabe, ein Problem (bzw. eine Klasse ähnlicher Probleme) automatisiert zu lösen. Dazu werden bspw. Programme entwickelt oder ganze Systeme entworfen, die diese Probleme lösen sollen. Will man diese \emph{Lösungsansätze} genauer untersuchen (bspw. den benötigten Speicherplatz oder die Laufzeit für verschiedene Eingaben), so benötigt man zunächst eine präzisere Definition des Begriffs:
+\begin{defi}[Intuitive Begriffsbestimmung: Algorithmus]
+	Ein \emph{Algorithmus} ist eine präzise endliche Beschreibung eines allgemeinen Verfahrens unter Verwendung ausführbarer elementarer (Verarbeitungs-)Schritte. Das Verfahren ist hierbei eine wohldefinierte Rechenvorschrift, die eine Menge von Elementen als Eingabe verwendet und eine Menge von Elementen als Ausgabe erzeugt.
+\end{defi}
+Ein Algorithmus ist also eine Art Kochrezept oder eine Schritt-für-Schritt-Anleitung zur Lösung eines Problems. Die einzelnen Schritte sollten hier so einfach wie möglich sein (\emph{elementar}) und es sollte insb. nur eine endliche Anzahl an Schritten geben.
+Will man Algorithmen untereinander weiter unterscheien, so kann man sie zunächst anhand der folgenden Eigenschaften klassifizieren:
+\begin{defi}
+  Man kann einen Algorithmus unter anderem anhand der folgenden Eigenschaft beschreiben:
+	\begin{itemize}
+		\item Abstrahierung
+		      \begin{itemize}
+			      \item löst ganze Klasse von Problemen
+			      \item konkretes Problem wird durch Parameter/ Daten spezifiziert
+		      \end{itemize}
+		\item Finitheit
+		      \begin{itemize}
+			      \item Beschreibung hat endl. Länge (\emph{statische Finitheit})
+			      \item Zu jedem Ausführungszeitpunkt belegt der Algo. nur endlich viel Platz (\emph{dynamische Finitheit})
+		      \end{itemize}
+		\item Terminierung
+		      \begin{itemize}
+			      \item Hält nach endlich vielen Schritten und liefert ein Ergebnis
+			      \item Kann auch sinnvoll sein, nichtterminierende Programme zu schreiben (Bspw. BS)
+		      \end{itemize}
+		\item Determinismus
+		      \begin{itemize}
+			      \item \emph{deterministisch:} Zu jedem Zeitpunkt gibt es genau eine Möglickeit zur Fortsetzung (sonst nichtdeterministisch)
+			      \item \emph{stochastisch:} Die Auswahl der Möglichkeiten (falls nichtdeterministisch) wird über Wahrscheinlichkeiten gesteuert (auch: randomisiert)
+		      \end{itemize}
+		\item Determiniertheit
+		      \begin{itemize}
+			      \item Algo. heißt determiniert, falls zu gleicher Eingabe stets gleiche Ausgabe geliefert wird (dies setzt \emph{nicht} vorraus, dass der Algo. deterministisch ist)
+		      \end{itemize}
+		\item Analysierbarkeit
+		      \begin{itemize}
+			      \item Es lassen sich Laufzeit und Speicherplatzbedarf angeben
+		      \end{itemize}
+		\item Korrektheit
+		      \begin{itemize}
+			      \item Sollte beweisbar sein, dass Algo. vorgegebenes Problem löst
+		      \end{itemize}
+	\end{itemize}
+\end{defi}
+
+\subsection{Algorithmische Prinzipien}
+Es gibt verschiedene Ansätze, um einen Algorithmus zu formulieren.
+\begin{defi}[Enumeration]
+	Hierbei wird der Algorithmus dadruch definiert, dass zu einer Eingabe alle Lösungen aufgezählt werden. Es ist offensichtlich, dass dies in den wenigsten Fällen (zumindest in der Informatik) sinnvoll ist.
+\end{defi}
+
+\begin{defi}[Divide \& Conquer]
+	Hierbei wird das Problem (in der Regel rekursiv) in Teilprobleme zerlegt, welche dann einzeln (evtl. parallel) gelöst werden können. Anschließend wird aus diesen Teillösungen eine Lösung für das Gesamtproblem (re-)konstruiert.
+	In der Regel werden die Teilprobleme selbst wieder in kleiner Teilprobleme zerlegt bis die Lösung des einzelnen Teilproblems sehr einfach oder trivial ist.
+\end{defi}
+
+\subsubsection{Greedy Algorithmen}
+Als \emph{Greedy-Algorithmen} oder gierige Algorithmen bezeichnet man Algorithmen, die schrittweise denjenigen Folgezustand auswählen, der zum Zeitpunkt der Wahl das beste Ergebnis verspricht. Dadurch sind Greedy-Algorithmen meist schnell, finden aber oft auch nicht die optimale Lösung eines Problems. Da es jedoch für eine Vielzahl von Problemen zu lange dauern würde oder sogar nicht innerhalb akzeptabler Zeit möglich ist, alle Lösungen zu berechnen um im Anschluss die optimale auszuwählen, nimmt man die nicht-optimale Lösung des Greedy-Verfahrens in Kauf.
+
+\subsubsection{Dynamische Programmierung}
+
+\subsection{Komplexität}
+Um aus verschiedenen Algorithmen einen geeigneten auszuwählen, ist es oft nützlich, die Laufzeit der Algorithmen in Abhängikeit der Problemgröße zu kennen. Hierbei ist es nicht sinnvoll einfach nur die Zeit zu messen, die ein Algorithmus bei verschiedenen Eingabegrößen benötigt, da diese Zeit u. a. von der verwendeten Hardware und der genauen Implementierung oder der Programmiersprache abhängt. Stattdessen beschreibt man die Komplexität durch die Anzahl elementarer Operationen in Abhängigkeit der Eingabelänge und vernachlässigt hierbei konstante Faktoren, die nicht von der Eingabelänge abhängen.
+
+Die \emph{Komplexität} von Algorithmen wird vor allem durch zwei Größen beschrieben:
+\begin{itemize}
+	\item \textbf{Laufzeit:} Anzahl der Schritte
+	\item \textbf{Speicherbedarf: } Anzahl benutzter Speicherzellen
+\end{itemize}
+Es wäre zu mühsam die genaue Anzahl der Schritte festzustellen (es müsste dazu der verwendete Prozessor, Assembler etc. bekannt sein). Daher werden konstante Faktoren in Laufzeiten und Speicherplatz weitgehend ignoriert und man konzentriert sich auf das asymptotische Wachstum der Komplexität im Verhältnis zur Größe.
+
+\begin{defi}[Asymptotisches Wachstum]
+	Zu einer Funktion $f : \mathbb{N}_{0} \rightarrow \mathbb{R}$ wird definiert:
+	\begin{enumerate}[label=(\roman*)]
+		\item Die Menge
+		      \begin{gather*}
+			      \mathcal{O}(f(n)) = \{ \ g : \mathbb{N}_0 \rightarrow \mathbb{R} \ : \ \exists c, n_0 > 0 : \ \forall n > n_0 : \ |g(n)| \le c \cdot |f(n)| \ \}
+		      \end{gather*}
+		      der Funktionen, die \textbf{höchstens so schnell wachsen} wie $f$.
+
+		\item Die Menge
+		      \begin{gather*}
+			      \Omega(f(n)) = \{ \ g : \mathbb{N}_0 \rightarrow \mathbb{R} \ : \ \exists c, n_0 > 0 : \ \forall n > n_0 : \ |g(n)| \ge c \cdot |f(n)| \ \}
+		      \end{gather*}
+		      der Funktionen, die \textbf{mindestens so schnell wachsen} wie $f$.
+
+		\item Die Menge
+		      \begin{gather*}
+			      \Theta(f(n)) = \{ \ g : \mathbb{N}_0 \rightarrow \mathbb{R} \ : \ \exists c_1, c_2, n_0 > 0 : \ \forall n > n_0 : \ c_1 \le \frac{ | g(n) | }{ | f(n) | } \le c_2 \ \}
+		      \end{gather*}
+		      der Funktionen, \textbf{die so schnell wachsen} wie $f$.
+
+		\item Die Menge
+		      \begin{gather*}
+			      o(f(n)) = \{ \ g : \mathbb{N}_0 \rightarrow \mathbb{R} \ : \ \forall c > 0 : \ \exists n_0 > 0 : \ \forall n > n_0 : \ c \cdot |g(n)| \le |f(n)| \}
+		      \end{gather*}
+		      der Funktionen, \textbf{die gegenüber} $f$ verschwinden.
+
+		\item Die Menge
+		      \begin{gather*}
+			      \omega(f(n)) = \{ \ g : \mathbb{N}_0 \rightarrow \mathbb{R} \ : \ \forall c > 0 : \ \exists n_0 > 0 : \ \forall n > n_0 : |g(n)| \ge c \cdot |f(n)| \}
+		      \end{gather*}
+		      der Funktionen, \textbf{denen gegenüber} $f$ verschwinden.
+	\end{enumerate}
+\end{defi}
+
+\begin{anm}
+	Offensichtlich gilt für $f : \mathbb{N} \rightarrow \mathbb{R}$
+	\begin{gather*}
+		\mathcal{O}(g) \cap \Omega(g) = \Theta(g)
+	\end{gather*}
+	und damit für $f,g : \mathbb{N}_0 \rightarrow \mathbb{R}$
+	\begin{gather*}
+		f \in \mathcal{O}(g(n)) \wedge f \in \Omega (g(n)) \Leftrightarrow f \in \Theta(g(n)).
+	\end{gather*}
+\end{anm}
+
+\begin{bsp}
+	Sei $p : \mathbb{N}_0 \rightarrow \mathbb{R}$ ein Polynom der Form $p(x) = \sum_{i=0}^d a_i \cdot x^i$ mit $a_i \in \mathbb{R}$ für $i \in \{0, \dots, d\}$ und $a_d \ne 0$. Insb. ist also $deg(f) = d$. Dann gilt für alle $n \ge 1$:
+	\begin{gather*}
+		p(n) = \sum\limits_{i=0}^d a_i \cdot n^i = \Big( a_d + a_{d-1} \cdot \frac{1}{n} + \dots + a_0 \cdot \frac{1}{n^d} \Big)\cdot n^d
+	\end{gather*}
+	und damit
+	\begin{gather*}
+		|p(n)| \le \Bigg( \sum\limits_{i=0}^d | a_i | \Bigg) \cdot n^d \text{ für alle } n \ge 1,
+	\end{gather*}
+	also $p(n) \in \mathcal{O}(n^d)$. Das Polynom lässt sich weiter umschreiben zu
+	\begin{align*}
+		p(n) & = a_d \cdot \Big( 1 + \frac{a_{d-1}}{a_d} \cdot \frac{1}{n^1} + \dots + \frac{a_0}{a_d} \cdot \frac{1}{n^d} \Big) \cdot n^d                                                         \\
+		     & = a_d \cdot \Bigg[ 1 + \frac{1}{n} \cdot \Big( \frac{a_{d-1}}{a_d} + \frac{a_{d-2}}{a_d} \cdot \frac{1}{n} + \dots + \frac{a_0}{a_d} \cdot \frac{1}{n^{d-1}} \Big) \Bigg] \cdot n^d
+	\end{align*}
+	sodass
+	\begin{gather*}
+		| p(n) | \ge |a_d| \cdot n^d \text{ für alle } n > \sum\limits_{i=0}^{d-1} \left|\frac{a_i}{a_d}\right|
+	\end{gather*}
+	also $p(n) \in \Sigma(n^d)$ und damit insgesamt
+	\begin{gather*}
+		p(n) \in \Theta(n^d).
+  \end{gather*}
+  bzw. allgemeiner für ein beliebiges Polynom $q : \mathbb{N} \rightarrow \mathbb{R}$:
+  \begin{gather*}
+    q(n) \in \Theta(n^{\deg(q)})
+  \end{gather*}
+	Das Wachstum einer durch ein Polynom beschriebenen Zahlenfolge hängt also nur vom Grad des Polynoms ab.
+\end{bsp}
+
+Wir wollen nun einige Aussagen betrachten, die sich direkt aus der obigen Definition ergeben:
+\begin{lemma} Seien $f, g : \mathbb{N}_0 \rightarrow \mathbb{R}$ gegeben. Dann gilt:
+	\begin{enumerate}[label=(\roman*)]
+		\item $g \in \mathcal{O}(f) \Leftrightarrow f \in \Omega(g)$ \\
+		      $g \in \Theta(f) \Leftrightarrow f \in \Theta(g)$
+
+		\item Die Basis eines Logarithmus spielt für das Wachstum keine Rolle: \\
+		      $\log_b(n) \in \Theta(\log_2(n))$ für alle $b > 1$.
+
+		\item Logarithmen wachsen langsamer als alle Polynome: \\
+		      $(\log_2(n))^d \in o(n^{\epsilon})$ für alle $d \in \mathbb{N}_0$ und jedes $\epsilon > 0$.
+
+		\item Exponetielles Wachstum ist immer schneller als polynomielles: \\
+		      $n^d \in o((1+\epsilon)^n)$ für alle $d \in \mathbb{N}_0$ und jedes $\epsilon > 0$.
+	\end{enumerate}
+\end{lemma}
+
+% \begin{proof}[Beweisidee]
+%   \begin{enumerate}[label=(\roman*)]
+%     \item Definitionsgemäß
+%     \item Folgt aus $\log_b(n) = (\log_2(b)) \cdot \log_2(n)$.
+%   \end{enumerate}
+% \end{proof}
+
+\begin{proposition} Seien $f,g : \mathbb{N}_0 \rightarrow \mathbb{R}$ monoton wachsende Funktionen. Dann gilt
+	\begin{align*}
+		f(n) \in \mathcal{O}(g(n)) \  & \Leftrightarrow \ \lim\limits_{n \rightarrow \infty}{\frac{f(n)}{g(n)}} < \infty     \\
+		f(n) \in \Omega(g(n)) \       & \Leftrightarrow \ \lim\limits_{n \rightarrow \infty}{\frac{f(n)}{g(n)}} > 0          \\
+		f(n) \in \Theta(g(n)) \       & \Leftrightarrow \ 0 < \lim\limits_{n \rightarrow \infty}{\frac{f(n)}{g(n)}} < \infty \\
+		f(n) \in o(g(n)) \            & \Leftrightarrow \ \lim\limits_{n \rightarrow \infty}{\frac{f(n)}{g(n)}} = 0          \\
+		f(n) \in \omega(g(n)) \       & \Leftrightarrow \ \lim\limits_{n \rightarrow \infty}{\frac{f(n)}{g(n)}} = \infty
+	\end{align*}
+\end{proposition}
+
+\subsubsection{Master-Theorem}
+Das \emph{Master-Theorem} bietet eine schnelle Lösung für die Frage, in welcher Laufzeitklasse eine gegebene rekursiv definierte Funktion liegt.
+
+\begin{satz}[Master-Theorem]
+	Seien $a \ge 1$ und  $b > 1$ Konstanten. Sei $f : \mathbb{N} \rightarrow \mathbb{R}^{+}$ eine Funktion, und sei $T(n)$ durch die folgende Rekursion definiert:
+	\begin{gather*}
+		T(n) = a T\Big(\frac{n}{b}\Big) + f(n),
+	\end{gather*}
+	wobei wir $\frac{n}{b}$ wahlweise als $\ceil[\big]{\frac{n}{b}}$ oder $\floor[\big]{\frac{n}{b}}$ interpretieren können. Dann gilt:
+	\begin{enumerate}
+		\item $f(n) \in \mathcal{O}(n^{\log_b{a - \epsilon}})$ für ein $\epsilon > 0 \Rightarrow T(n) \in \Theta(n^{\log_b{a}})$
+
+		\item $f(n) \in \Theta(n^{\log_b{a}}) \Rightarrow T(n) \in \Theta(n^{\log_b{a}} \log n)$
+
+		\item $f(n) \in \Omega(n^{\log_b{a + \epsilon}})$ für ein $\epsilon > 0$ und für ein $c$ mit $0 < c < 1$ gilt \\
+		      $a \cdot f\big(\frac{n}{b}\big) \le c \cdot f(n) \Rightarrow T(n) \in \Theta(f(n))$
+	\end{enumerate}
+\end{satz}
+\begin{anm}
+	Trifft keiner der drei Fälle zu, so liefert das Master-Theorem keine Aussage und es muss eine andere Methode gewählt werden, um die Laufzeitklasse zu bestimmen.
+\end{anm}
+
+\begin{bsp}
+	Es sei die rekursive Funktion $T : \mathbb{N} \rightarrow \mathbb{R}$ gegeben mit
+	\begin{gather*}
+		T(n) = 9 T\big(\frac{n}{3}\big) + n.
+	\end{gather*}
+	Es ist also $a = 9, b = 3$ und $f(n) = n$. Damit ergibt sich $\log_3 9 = 2$ und somit $n^{\log_3 9} = n^2$. Offensichtlich ist $f(n) = n \in \mathcal{O}(n^{\log_3 9 - \epsilon}) = \mathcal{O}(n^{2 - \epsilon})$ für $\epsilon = 1$. Es trifft also die Voraussetzung des ersten Falls zu und damit erhält man
+	\begin{gather*}
+		T(n) \in \Theta(n^2).
+	\end{gather*}
+\end{bsp}
+
+\begin{bsp}
+	Es sei nun
+	\begin{gather*}
+		T(n) = T\big(\frac{2}{3} n \big) + 1
+	\end{gather*}
+	gegeben. Es ist also $a = 1, b = \frac{3}{2}$ und $f(n) = 1$. Damit ist $n^{\log_b a} = n^{\log_{\frac{2}{3}} 1} = n^0 = 1$. Wir befinden uns also im Fall 2 des Master-Theorems, da $f(n) \in \Theta(1) = \Theta(n^{\log_b a})$. Damit erhalten wir
+	\begin{gather*}
+		T(n) \in \Theta(\log n)
+	\end{gather*}
+\end{bsp}
+
+\subsubsection{Grenzen der Komplexität}
+Die oben eingeführten Klassen $\mathcal{O}, \Omega$ und $\Theta$ vereinfachen das Vergleichen von Algorithmen ungemein. Man kann relativ schnell erkennen, welcher Algorithmus für ein bestimmtes Problem schneller ist.
+Es ist jedoch zu beachten, dass insbesondere Vergleiche von Algorithmen, die in der selben Klasse liegen, teilweise nicht besonders aussagekräftig sein können, wie das folgende Beispiel verdeutlicht:
+
+Wie wir im Kapitel 3 noch sehen werden, liegen sowohl \textsc{quicksort} als auch \textsc{mergesort} in besten Fall in $\Theta(n \log n)$. \textsc{quicksort} liegt im schlechtesten Fall in $\Theta(n^2)$ -- anscheinend weitaus schlechter als \textsc{mergesort}, welcher auch im schlechtesten Fall in $\Theta(n \log n)$ liegt.
+
+In der Praxis kommt \textsc{quicksort} jedoch weitaus häufiger zum Einsatz als \textsc{mergesort}. Das liegt vor allem daran, dass die in der Definition verwendeten Konstanten $c$ bei letzterem deutlich größer sind als bei \textsc{quicksort}. Zudem ist die Wahrscheinlichkeit, dass der schlechteste Fall Eintritt, zum Einen sehr gering und kann zum Anderen durch geschickte Implementierung sogar noch verringert werden.
